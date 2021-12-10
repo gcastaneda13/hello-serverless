@@ -1,6 +1,6 @@
-pipeline{
+pipeline {
     agent any
-    stages{
+    stages {
         stage('build sin test'){
             steps{
                 nodejs(nodeJSInstallationName: 'nodejs'){
@@ -10,22 +10,22 @@ pipeline{
                 }
             }
         }
-    }
 
-    stage('unitTest'){ 
-        steps{
-            nodejs(nodeJSInstallationName: 'nodejs'){
-                sh 'nmp run test:coverage && cp coverage/lcov.info lcov.info || echo "Code coverge failed"'
-                archiveArtifacts(artifacts: 'coverage/**', onlyIfSuccessful: true)
+        stage('unitTest'){ 
+            steps{
+                nodejs(nodeJSInstallationName: 'nodejs'){
+                    sh 'nmp run test:coverage && cp coverage/lcov.info lcov.info || echo "Code coverge failed"'
+                    archiveArtifacts(artifacts: 'coverage/**', onlyIfSuccessful: true)
+                }
             }
         }
-    }
 
-    stage('deploy'){
-        steps{
-            nodejs(nodeJSInstallationName: 'nodejs'){
-                withAWS(credentials: 'aws-credentials'){
-                    sh 'serverless deploy'
+        stage('deploy'){
+            steps{
+                nodejs(nodeJSInstallationName: 'nodejs'){
+                    withAWS(credentials: 'aws-credentials'){
+                        sh 'serverless deploy'
+                    }
                 }
             }
         }
