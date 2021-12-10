@@ -14,7 +14,7 @@ pipeline {
         stage('unitTest'){ 
             steps{
                 nodejs(nodeJSInstallationName: 'nodejs'){
-                    sh 'nmp run test:coverage && cp coverage/lcov.info lcov.info || echo "Code coverge failed"'
+                    sh 'nmp run test:coverage && cp coverage/lcov.info lcov.info || echo "Code coverage failed"'
                     archiveArtifacts(artifacts: 'coverage/**', onlyIfSuccessful: true)
                 }
             }
